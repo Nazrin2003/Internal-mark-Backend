@@ -1,17 +1,19 @@
 const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
+const examModel = require("./models/Exam")
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+mongoose.connect("mongodb+srv://Nazrin2003:nazrin2003@cluster0.62ddoa0.mongodb.net/internalMarkDb?retryWrites=true&w=majority&appName=Cluster0")
 
 app.post("/calculate", (request, response) => {
-    const name = parseInt(request.body.name)
+    const name = (request.body.name)
     const admno = parseInt(request.body.admno)
-    const subject = parseInt(request.body.subject)
+    const subject = (request.body.subject)
 
     const present = parseInt(request.body.present)
     const totalDays = parseInt(request.body.totalDays)
@@ -32,8 +34,47 @@ app.post("/calculate", (request, response) => {
 
 
     const internalMark = attendance + exam1Result + exam2Result + assignmentTot
-    response.json({ "attendance": attendance, "exam_1_result": exam1Result, "exam_2_result": exam2Result, "assignment": assignmentTot, "internal": internalMark })
+    response.json({ "name": name, "admno": admno, "subject": subject, "attendance": attendance, "exam_1_result": exam1Result, "exam_2_result": exam2Result, "assignment": assignmentTot, "internal": internalMark })
+
+
+    let data_store = new examModel(
+        {
+            name: name,
+            admno: admno,
+            subject: subject,
+            present: present,
+            totalDays: totalDays,
+            attendance: attendance,
+
+            exam1: exam1,
+            exam1Total: exam1Total,
+            exam1Result: exam1Result,
+
+            exam2: exam2,
+            exam2Total: exam2Total,
+            exam2Result: exam2Result,
+
+            assignment1: assignment1,
+            assignment2: assignment2,
+            assignmentTot: assignment2
+
+        }
+
+    )
+    data_store.save()
+
 })
+
+
+app.get("/viewall",(request,response)=>{
+    examModel.find().then(
+        (items)=>{
+            response.json(items)
+        }
+    ).catch()
+})
+
+
 
 app.listen("4004", () => {
     console.log("Server Running")
