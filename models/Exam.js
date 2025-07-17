@@ -18,7 +18,8 @@ const examSchema = mongoose.Schema(
 
         assignment1:String,
         assignment2:String,
-        assignmentTot:String
+        assignmentTot:String,
+        internalMark:String
 
     }
 )

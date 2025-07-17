@@ -56,7 +56,8 @@ app.post("/calculate", (request, response) => {
 
             assignment1: assignment1,
             assignment2: assignment2,
-            assignmentTot: assignment2
+            assignmentTot: assignment2,
+            internalMark:internalMark
 
         }
 
@@ -76,6 +77,6 @@ app.get("/viewall",(request,response)=>{
 
 
 
-app.listen("4004", () => {
+app.listen("4005", () => {
     console.log("Server Running")
 })
